@@ -1,0 +1,16 @@
+{
+  "Users": [
+    {
+      "id": 1,
+      "name": "swayamshu",
+      "email": "alice@db.com"
+    }
+  ],
+  "Inventory": [
+    {
+      "id": 101,
+      "item": "Server Rack",
+      "status": "Active"
+    }
+  ]
+}

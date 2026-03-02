@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Database Explorer</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="theme-blue">
+
+    <div class="area">
+        <ul class="circles">
+            <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+        </ul>
+    </div>
+
+    <div id="login-screen" class="login-overlay">
+        <div class="neon-card">
+            <h2 class="neon-text">SYSTEM LOGIN</h2>
+            <input type="text" id="username" placeholder="User ID">
+            <input type="password" id="password" placeholder="Passcode">
+            <button onclick="attemptLogin()" class="neon-btn">INITIALIZE</button>
+            <p id="login-error" style="display:none; color: #ff0055; margin-top:10px;">INVALID ACCESS</p>
+        </div>
+    </div>
+
+    <div id="main-app" style="display: none;">
+        <nav class="top-nav glass">
+            <span class="logo neon-text">NEON<span style="font-weight:300">CORE</span></span>
+            
+            <div class="theme-switcher">
+                <button onclick="setTheme('theme-blue')" class="dot blue"></button>
+                <button onclick="setTheme('theme-black')" class="dot black"></button>
+                <button onclick="setTheme('theme-green')" class="dot green"></button>
+                <button onclick="setTheme('theme-white')" class="dot white"></button>
+            </div>
+
+            <button onclick="logout()" class="logout-btn">LOGOUT</button>
+        </nav>
+
+        <div class="container">
+            <aside class="sidebar glass">
+                <h3 class="neon-text" style="font-size: 1rem;">DATABASES</h3>
+                <ul id="table-list"></ul>
+            </aside>
+
+            <main class="content">
+                <div class="search-box glass">
+                    <input type="text" id="queryInput" placeholder="Filter neural network..." onkeyup="runSearch()">
+                </div>
+
+                <div class="glass data-container">
+                    <table id="glass-table">
+                        <thead><tr id="table-header"></tr></thead>
+                        <tbody id="table-body"></tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="new.js"></script>
+</body>
+</html>

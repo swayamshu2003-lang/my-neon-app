@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+
+:root {
+    --neon-blue: #00d2ff;
+    --neon-green: #39ff14;
+    --neon-pink: #ff0055;
+}
+
+/* Base Body */
+body { margin: 0; height: 100vh; font-family: sans-serif; transition: 0.5s; overflow: hidden; }
+
+/* Themes */
+.theme-blue { background: #000428; --accent: var(--neon-blue); }
+.theme-black { background: #0a0a0a; --accent: #ffffff; }
+.theme-green { background: #020d00; --accent: var(--neon-green); }
+.theme-white { background: #f0f0f0; --accent: #333; }
+.theme-white .glass { background: rgba(0,0,0,0.05); color: #222; border: 1px solid #ccc; }
+
+/* Animated Circles Background */
+.circles li { position: absolute; list-style: none; background: rgba(255,255,255,0.1); animation: animate 20s linear infinite; bottom: -150px; }
+@keyframes animate { 0%{transform:translateY(0) rotate(0deg); opacity:1;} 100%{transform:translateY(-1000px) rotate(720deg); opacity:0;} }
+
+/* Login */
+.login-overlay { height: 100vh; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.85); }
+.neon-card { padding: 40px; border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent); border-radius: 15px; text-align: center; background: #000; }
+.neon-text { font-family: 'Orbitron'; color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+
+/* Buttons & Dots */
+.dot { width: 25px; height: 25px; border-radius: 50%; border: 2px solid #fff; cursor: pointer; margin: 0 5px; }
+.blue { background: #00d2ff; } .black { background: #333; } .green { background: #39ff14; } .white { background: #fff; }
+
+.glass { background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border-radius: 15px; color: #fff; border: 1px solid rgba(255,255,255,0.1); }
