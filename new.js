@@ -1,45 +1,52 @@
 
 let currentData = [];
 
-// 1. Login Logic
+// 1. Neon Login Logic
 async function attemptLogin() {
     const user = document.getElementById('username').value;
     const pass = document.getElementById('password').value;
 
-    if (user === "swayamshu" && pass === "bablu") {
+    // Updated credentials as per your screenshot
+    if (user === "admin" && pass === "1234") { 
         document.getElementById('login-screen').style.display = 'none';
         document.getElementById('main-app').style.display = 'block';
-        fetchData();
+        fetchData(); // Calls the Render API
     } else {
-        document.getElementById('login-error').style.display = 'block';
+        const errorMsg = document.getElementById('login-error');
+        errorMsg.style.display = 'block';
+        errorMsg.innerText = "INVALID NEURAL KEY";
     }
 }
 
-// 2. Fetch Data from Render Backend
+// 2. Fetch Data (Fixed for Render)
 async function fetchData() {
     try {
-        // Using '/api/data' ensures it works on Render and Mobile
+        // Changed to relative path to work on the cloud
         const response = await fetch('/api/data'); 
+        if (!response.ok) throw new Error("Network response was not ok");
+        
         const data = await response.json();
         renderSidebar(data);
         
-        // Auto-load first sheet
+        // Auto-load the first sheet available
         const firstSheet = Object.keys(data)[0];
         if (firstSheet) {
             currentData = data[firstSheet];
             displayTable(currentData);
         }
     } catch (err) {
-        alert("Backend Offline! Please wait for Render to wake up.");
+        console.error("Fetch error:", err);
+        alert("SYSTEM OFFLINE: Render is waking up, please wait 30 seconds and try again.");
     }
 }
 
-// 3. Render Sidebar Menu
+// 3. Sidebar Sheet Navigation
 function renderSidebar(data) {
     const list = document.getElementById('table-list');
     list.innerHTML = "";
     Object.keys(data).forEach(name => {
         const li = document.createElement('li');
+        li.className = "glass-item";
         li.innerHTML = `<span>⚡</span> ${name}`;
         li.onclick = () => {
             currentData = data[name];
@@ -49,7 +56,7 @@ function renderSidebar(data) {
     });
 }
 
-// 4. Search Function
+// 4. Neon Search Filter
 function runSearch() {
     const term = document.getElementById('queryInput').value.toLowerCase();
     const filtered = currentData.filter(row => 
@@ -58,7 +65,7 @@ function runSearch() {
     displayTable(filtered);
 }
 
-// 5. Display Table Logic
+// 5. Table Rendering
 function displayTable(data) {
     const header = document.getElementById('table-header');
     const body = document.getElementById('table-body');
@@ -66,9 +73,11 @@ function displayTable(data) {
     body.innerHTML = "";
 
     if (data.length > 0) {
+        // Build Headers
         Object.keys(data[0]).forEach(key => {
             header.innerHTML += `<th>${key}</th>`;
         });
+        // Build Rows
         data.forEach(row => {
             const tr = document.createElement('tr');
             Object.values(row).forEach(val => {
