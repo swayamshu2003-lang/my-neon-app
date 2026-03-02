@@ -1,22 +1,22 @@
-onst express = require('express');
+const express = require('express');
 const xlsx = require('xlsx');
 const path = require('path');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000; 
 
 app.use(cors());
 
-// 1. THIS LINE FIXES THE ERROR: It tells the server to serve your HTML/CSS/JS
+// Serve your HTML, CSS, and JS files
 app.use(express.static(path.join(__dirname)));
 
-// 2. THIS LINE TELLS RENDER TO OPEN index.html AT THE START
+// Serve index.html as the home page (Fixes "Cannot GET /")
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// 3. Your Excel Data Route
+// API Route for Excel data
 app.get('/api/data', (req, res) => {
     try {
         const workbook = xlsx.readFile('myData.xlsx');
@@ -26,10 +26,11 @@ app.get('/api/data', (req, res) => {
         });
         res.json(data);
     } catch (err) {
-        res.status(500).json({ error: "Excel file not found or corrupted" });
+        console.error("Excel Error:", err);
+        res.status(500).json({ error: "Excel file not found" });
     }
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Server is live on port ${PORT}`);
 });
