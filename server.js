@@ -1,51 +1,34 @@
-const express = require('express');
+
+   const express = require('express');
 const xlsx = require('xlsx');
+const path = require('path');
 const cors = require('cors');
-const fs = require('fs');
-const path = require('path'); // Added for path handling
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
+// This line tells the server to serve your HTML/CSS/JS files
+app.use(express.static(path.join(__dirname)));
+
+// This line tells the server to open index.html when you visit the link
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.get('/api/data', (req, res) => {
-    // This looks for 'myData.xlsx' in the EXACT folder where this server.js sits
-    const filePath = path.join(__dirname, 'myData.xlsx');
-
-    console.log("-------------------------------------------");
-    console.log("🔍 Browser request received.");
-    console.log("📂 Looking for file at:", filePath);
-
-    if (!fs.existsSync(filePath)) {
-        console.log("❌ ERROR: File not found!");
-        return res.status(404).json({ 
-            error: "File not found", 
-            searchedPath: filePath 
-        });
-    }
-
     try {
-        const workbook = xlsx.readFile(filePath);
-        const allData = {};
-
-        workbook.SheetNames.forEach(sheetName => {
-            const worksheet = workbook.Sheets[sheetName];
-            allData[sheetName] = xlsx.utils.sheet_to_json(worksheet);
+        const workbook = xlsx.readFile('myData.xlsx');
+        const data = {};
+        workbook.SheetNames.forEach(sheet => {
+            data[sheet] = xlsx.utils.sheet_to_json(workbook.Sheets[sheet]);
         });
-
-        console.log("✅ SUCCESS: Data sent to Frontend.");
-        res.json(allData);
+        res.json(data);
     } catch (err) {
-        console.log("❌ CRASH: Error reading Excel:", err.message);
-        res.status(500).json({ error: "Failed to read Excel file" });
+        res.status(500).json({ error: "Excel file not found" });
     }
 });
 
 app.listen(PORT, () => {
-    console.log(`\n===========================================`);
-    console.log(`🚀 BACKEND ACTIVE: http://localhost:${PORT}`);
-    console.log(`📂 Folder: ${__dirname}`);
-    console.log(`🛑 Press Ctrl + C to stop`);
-    console.log(`===========================================\n`);
+    console.log(`Server running on port ${PORT}`);
 });
