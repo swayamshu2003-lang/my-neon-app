@@ -1,5 +1,4 @@
-
-   const express = require('express');
+onst express = require('express');
 const xlsx = require('xlsx');
 const path = require('path');
 const cors = require('cors');
@@ -8,14 +7,16 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-// This line tells the server to serve your HTML/CSS/JS files
+
+// 1. THIS LINE FIXES THE ERROR: It tells the server to serve your HTML/CSS/JS
 app.use(express.static(path.join(__dirname)));
 
-// This line tells the server to open index.html when you visit the link
+// 2. THIS LINE TELLS RENDER TO OPEN index.html AT THE START
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// 3. Your Excel Data Route
 app.get('/api/data', (req, res) => {
     try {
         const workbook = xlsx.readFile('myData.xlsx');
@@ -25,7 +26,7 @@ app.get('/api/data', (req, res) => {
         });
         res.json(data);
     } catch (err) {
-        res.status(500).json({ error: "Excel file not found" });
+        res.status(500).json({ error: "Excel file not found or corrupted" });
     }
 });
 
