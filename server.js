@@ -4,19 +4,20 @@ const path = require('path');
 const cors = require('cors');
 
 const app = express();
+// This ensures the server uses Render's assigned port
 const PORT = process.env.PORT || 10000; 
 
 app.use(cors());
 
-// Serve your HTML, CSS, and JS files
+// This tells the server to find your index.html and style.css
 app.use(express.static(path.join(__dirname)));
 
-// Serve index.html as the home page (Fixes "Cannot GET /")
+// This tells the server to open your login page immediately
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// API Route for Excel data
+// This provides the Excel data to your phone
 app.get('/api/data', (req, res) => {
     try {
         const workbook = xlsx.readFile('myData.xlsx');
@@ -26,11 +27,10 @@ app.get('/api/data', (req, res) => {
         });
         res.json(data);
     } catch (err) {
-        console.error("Excel Error:", err);
-        res.status(500).json({ error: "Excel file not found" });
+        res.status(500).json({ error: "Excel file connection failed" });
     }
 });
 
 app.listen(PORT, () => {
-    console.log(`Server is live on port ${PORT}`);
+    console.log(`Neon Server Restore Complete on Port ${PORT}`);
 });
